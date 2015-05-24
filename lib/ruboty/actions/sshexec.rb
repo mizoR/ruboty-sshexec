@@ -15,6 +15,7 @@ module Ruboty
           sshopts    = { number_of_password_prompts: 0, passphrase: false }.merge(sshopts)
 
           define_method(:ssh_start) do |opts={}, &block|
+            opts = opts.dup
             h = opts.delete(:host) || host
             u = opts.delete(:user) || user
             o = sshopts.merge(opts)
@@ -27,10 +28,11 @@ module Ruboty
       def sshexec(command, opts={})
         executes_opts = opts[:executes] || {}
         executed_opts = opts[:executed] || {}
+        ssh_opts      = opts[:ssh_options] || {}
 
         message.reply "> Executes: #{executes_opts[:message]}\n>>>\n```\n$ #{command}\n```"
         Thread.start do
-          ssh_start do |ssh|
+          ssh_start(ssh_opts) do |ssh|
             begin
               output = ssh.exec!(command)
               message.reply "> Executed: #{executed_opts[:message]}\n>>>\n```\n#{output.chomp}\n```"
