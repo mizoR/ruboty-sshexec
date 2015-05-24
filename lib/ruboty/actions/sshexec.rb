@@ -25,15 +25,15 @@ module Ruboty
       end
 
       def sshexec(command, opts={})
-        opts[:executes] ||= {}
-        opts[:executed] ||= {}
+        executes_opts = opts[:executes] || {}
+        executed_opts = opts[:executed] || {}
 
-        message.reply "> Executes: #{opts[:executes][:message]}\n>>>\n```\n$ #{command}\n```"
+        message.reply "> Executes: #{executes_opts[:message]}\n>>>\n```\n$ #{command}\n```"
         Thread.start do
           ssh_start do |ssh|
             begin
               output = ssh.exec!(command)
-              message.reply "> Executed: #{opts[:executed][:message]}\n>>>\n```\n#{output.chomp}\n```"
+              message.reply "> Executed: #{executed_opts[:message]}\n>>>\n```\n#{output.chomp}\n```"
             rescue => e
               message.reply "> Error: *#{e.message}*\n>>>\n```\n#{e.backtrace[0..5].join("\n")}\n```"
             end
