@@ -25,7 +25,7 @@ module Ruboty
         end
       end
 
-      def sshexec(command, opts={})
+      def ssh_exec(command, opts={})
         executes_opts = opts[:executes] || {}
         executed_opts = opts[:executed] || {}
         ssh_opts      = opts[:ssh_options] || {}

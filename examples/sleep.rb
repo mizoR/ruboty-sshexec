@@ -22,7 +22,7 @@ module Ruboty
       def call
         sec = message[1].to_i
 
-        sshexec "sleep #{sec}; echo '(*ﾟﾛﾟ)ｶﾞﾊﾞｯ!!'",
+        ssh_exec "sleep #{sec}; echo '(*ﾟﾛﾟ)ｶﾞﾊﾞｯ!!'",
           executes: {message: "I'll sleep for #{sec} seconds."},
           executed: {message: "I slept for #{sec} seconds."}
       end

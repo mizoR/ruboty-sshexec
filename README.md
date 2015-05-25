@@ -36,7 +36,7 @@ module Ruboty
       ssh 'ruboty@saas.example.com', password: 'passw0rd'
 
       def call
-        sshexec "hostname"
+        ssh_exec "hostname"
       end
     end
   end

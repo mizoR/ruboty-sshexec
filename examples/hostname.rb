@@ -20,7 +20,7 @@ module Ruboty
       ssh ENV['SSH_USER_AT_HOST'], password: ENV['SSH_PASSWORD']
 
       def call
-        sshexec "hostname"
+        ssh_exec "hostname"
       end
     end
   end
