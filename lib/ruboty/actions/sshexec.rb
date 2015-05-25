@@ -9,16 +9,16 @@ module Ruboty
       end
 
       module ClassMethods
-        def ssh(user_at_host, sshopts={})
+        def ssh(user_at_host, ssh_opts={})
           uri        = URI.parse("ssh://#{user_at_host}")
           host, user = uri.host, uri.user
-          sshopts    = { number_of_password_prompts: 0, passphrase: false }.merge(sshopts)
+          ssh_opts   = { number_of_password_prompts: 0, passphrase: false }.merge(ssh_opts)
 
           define_method(:ssh_start) do |opts={}, &block|
             opts = opts.dup
             h = opts.delete(:host) || host
             u = opts.delete(:user) || user
-            o = sshopts.merge(opts)
+            o = ssh_opts.merge(opts)
 
             Net::SSH.start(h, u, o) { |ssh| block.call(ssh) }
           end
