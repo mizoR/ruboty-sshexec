@@ -35,7 +35,9 @@ module Ruboty
           ssh_start(ssh_opts) do |ssh|
             begin
               output = ssh.exec!(command)
-              message.reply "> Executed: #{executed_opts[:message]}\n>>>\n```\n#{output.to_s.chomp}\n```"
+              str = "> Executed: #{executed_opts[:message]}"
+              str << "\n>>>\n```\n#{output.chomp}\n```" if output
+              message.reply str
             rescue => e
               message.reply "> Error: *#{e.message}*\n>>>\n```\n#{e.backtrace[0..5].join("\n")}\n```"
             end
