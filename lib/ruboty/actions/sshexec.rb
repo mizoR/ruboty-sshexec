@@ -32,15 +32,15 @@ module Ruboty
 
         message.reply "> Executes: #{executes_opts[:message]}\n>>>\n```\n$ #{command}\n```"
         Thread.start do
-          ssh_start(ssh_opts) do |ssh|
-            begin
+          begin
+            ssh_start(ssh_opts) do |ssh|
               output = ssh.exec!(command)
               str = "> Executed: #{executed_opts[:message]}"
               str << "\n>>>\n```\n#{output.chomp}\n```" if output
               message.reply str
-            rescue => e
-              message.reply "> Error: *#{e.message}*\n>>>\n```\n#{e.backtrace[0..5].join("\n")}\n```"
             end
+          rescue => e
+            message.reply "> Error: *#{e.message}*\n>>>\n```\n#{e.backtrace[0..5].join("\n")}\n```"
           end
         end
       rescue => e
