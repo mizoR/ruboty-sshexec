@@ -35,8 +35,12 @@ module Ruboty
           begin
             ssh_start(ssh_opts) do |ssh|
               output = ssh.exec!(command)
+
               str = "> Executed: #{executed_opts[:message]}"
-              str << "\n>>>\n```\n#{output.chomp}\n```" if output
+              if output
+                output.force_encoding('utf-8')
+                str << "\n>>>\n```\n#{output.chomp}\n```"
+              end
               message.reply str
             end
           rescue => e
