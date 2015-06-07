@@ -4,6 +4,15 @@ require 'net/ssh'
 module Ruboty
   module Actions
     module Sshexec
+      class SimpleFormatter
+        def call(output)
+          if output
+            output.force_encoding('utf-8')
+            ">>>\n```\n#{output.chomp}\n```"
+          end
+        end
+      end
+
       def self.included(klass)
         klass.extend(ClassMethods)
       end
@@ -26,6 +35,7 @@ module Ruboty
       end
 
       def ssh_exec(command, opts={})
+        formatter = opts[:formatter] || SimpleFormatter.new
         executes_opts = opts[:executes] || {}
         executed_opts = opts[:executed] || {}
         ssh_opts      = opts[:ssh_options] || {}
@@ -37,10 +47,8 @@ module Ruboty
               output = ssh.exec!(command)
 
               str = "> Executed: #{executed_opts[:message]}"
-              if output
-                output.force_encoding('utf-8')
-                str << "\n>>>\n```\n#{output.chomp}\n```"
-              end
+              output = formatter.call(output)
+              str << "\n" << output if output
               message.reply str
             end
           rescue => e
